@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Bet-X: noví platící hráči</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: styl zdenekmatuska.cz – světlá plocha, tmavě zelené pásy, limetkový zvýrazňovač pod klíčovými slovy */
+:root{
+  --bg:#FAFCE8; --surface:#FFFFFF; --soft:#EFF7E4; --line:#DDE9E3;
+  --ink:#0B1F17; --text:#2B3B33; --muted:#5A6B62;
+  --forest:#0F3D2E; --forest-2:#1B5745; --lime:#D2F24C; --on-forest:#F3F8EE; --on-forest-muted:#B9CDC2;
+  --bad:#B4432F; --bad-soft:#FBEAE5;
+  --font:Poppins,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1A14; --surface:#11261D; --soft:#132B21; --line:#24402F;
+  --ink:#F1F6EC; --text:#D4E0D8; --muted:#9DB2A6;
+  --forest:#08140F; --forest-2:#1B5745; --lime:#D2F24C; --on-forest:#F3F8EE; --on-forest-muted:#A9BFB3;
+  --bad:#F0907C; --bad-soft:#2E1813; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1A14; --surface:#11261D; --soft:#132B21; --line:#24402F;
+  --ink:#F1F6EC; --text:#D4E0D8; --muted:#9DB2A6;
+  --forest:#08140F; --forest-2:#1B5745; --lime:#D2F24C; --on-forest:#F3F8EE; --on-forest-muted:#A9BFB3;
+  --bad:#F0907C; --bad-soft:#2E1813; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:clamp(48px,7vw,88px)}
+h1,h2,h3{color:var(--ink);text-wrap:balance;margin:0}
+h1{font-size:clamp(34px,5vw,62px);line-height:1.08;letter-spacing:-0.03em;font-weight:700}
+h2{font-size:clamp(26px,3.2vw,40px);line-height:1.15;letter-spacing:-0.02em;font-weight:700}
+h3{font-size:19px;line-height:1.3;font-weight:600}
+p{margin:0;max-width:66ch}
+.mark{position:relative;display:inline-block;white-space:nowrap}
+.mark::before{content:"";position:absolute;left:-6px;right:-6px;top:16%;bottom:8%;background:var(--lime);border-radius:8px;z-index:0}
+.mark>span{position:relative;z-index:1;color:#0B1F17}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--forest-2)}
+:root:not([data-theme="light"]) .eyebrow{color:var(--forest-2)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .eyebrow{color:var(--lime)}}
+:root[data-theme="dark"] .eyebrow{color:var(--lime)}
+.lead{font-size:clamp(17px,1.4vw,20px);color:var(--muted)}
+.lead strong{color:var(--ink);font-weight:600}
+.stack{display:flex;flex-direction:column;gap:18px}
+
+/* hero */
+.hero{padding-block:clamp(56px,8vw,104px) clamp(40px,5vw,64px)}
+.hero .stack{gap:26px}
+.note{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;max-width:720px}
+.note b{color:var(--ink)}
+.note .dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--lime);margin-top:8px;box-shadow:0 0 0 4px color-mix(in srgb,var(--lime) 30%,transparent)}
+.toc{display:flex;flex-wrap:wrap;gap:8px}
+.toc a{font-size:14px;font-weight:500;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--surface);padding:7px 14px;border-radius:999px}
+.toc a:hover,.toc a:focus-visible{border-color:var(--forest-2);outline:none}
+
+/* dark band */
+.band{background:var(--forest);color:var(--on-forest-muted)}
+.band h2,.band h3{color:var(--on-forest)}
+.band .eyebrow{color:var(--lime)}
+.band .lead{color:var(--on-forest-muted)}
+
+/* funnel compare */
+.compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:20px;margin-top:36px}
+.flow{border-radius:18px;padding:24px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.flow.badf{background:var(--bad-soft);border:1px solid color-mix(in srgb,var(--bad) 35%,transparent)}
+.flow.goodf{background:var(--surface);border:1px solid var(--line)}
+.flow .tag{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.flow.badf .tag{color:var(--bad)}
+.flow.goodf .tag{color:var(--forest-2)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .flow.goodf .tag{color:var(--lime)}}
+:root[data-theme="dark"] .flow.goodf .tag{color:var(--lime)}
+.steps{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.chip{font-size:14px;font-weight:500;padding:8px 12px;border-radius:10px;background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.chip.hot{background:var(--lime);color:#0B1F17;border-color:transparent}
+.chip.drop{border-style:dashed;color:var(--bad);border-color:var(--bad);background:transparent}
+.arrow{color:var(--muted);font-weight:600}
+code.url{font-size:13px;word-break:break-all;background:var(--surface);border:1px solid var(--line);padding:3px 7px;border-radius:6px;color:var(--ink)}
+
+/* LP anatomy */
+.anat{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:28px;margin-top:40px;align-items:start}
+.lp{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.lp .bar{display:flex;gap:6px;padding:4px 4px 8px}
+.lp .bar i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.lp .blk{border-radius:10px;padding:12px 14px;background:var(--soft);font-size:14px;color:var(--text)}
+.lp .blk b{display:block;color:var(--ink);font-size:15px}
+.lp .blk.h{background:var(--forest);color:var(--on-forest-muted)}
+.lp .blk.h b{color:var(--on-forest);font-size:18px}
+.lp .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.lp .row3 .blk{text-align:center;padding:10px 6px;font-size:13px}
+.lp .cta{background:var(--lime);color:#0B1F17;font-weight:600;text-align:center;border-radius:10px;padding:12px}
+.lp .tiny{font-size:12px;color:var(--muted);text-align:center}
+ol.clean{margin:0;padding:0;list-style:none;counter-reset:n;display:flex;flex-direction:column;gap:14px}
+ol.clean li{counter-increment:n;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start}
+ol.clean li::before{content:counter(n);width:30px;height:30px;border-radius:50%;background:var(--forest);color:var(--lime);font-weight:600;font-size:14px;display:grid;place-items:center}
+ol.clean b{color:var(--ink)}
+
+/* two col */
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:24px;margin-top:36px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.band .box{background:var(--forest-2);border-color:transparent;color:var(--on-forest)}
+.band .box h3{color:var(--on-forest)}
+ul.ticks{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+ul.ticks li{padding-left:26px;position:relative}
+ul.ticks li::before{content:"";position:absolute;left:2px;top:9px;width:12px;height:7px;border-left:2px solid var(--forest-2);border-bottom:2px solid var(--forest-2);transform:rotate(-45deg)}
+.band ul.ticks li::before{border-color:var(--lime)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) ul.ticks li::before{border-color:var(--lime)}}
+:root[data-theme="dark"] ul.ticks li::before{border-color:var(--lime)}
+ul.ticks b{color:inherit;font-weight:600}
+.quote{font-size:clamp(19px,2vw,24px);line-height:1.45;color:var(--on-forest);font-weight:500;max-width:30ch}
+.quote-wrap{display:flex;flex-direction:column;gap:18px;justify-content:center}
+.stat{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.stat .n{font-size:clamp(34px,4vw,48px);font-weight:700;color:var(--lime);letter-spacing:-0.02em;line-height:1}
+.stat .l{color:var(--on-forest-muted)}
+
+/* keywords */
+.kw{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.kw span{font-size:14px;font-weight:500;padding:7px 12px;border-radius:8px;background:var(--soft);color:var(--ink);border:1px solid var(--line)}
+.money{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px;margin-top:8px}
+.money div{border-radius:12px;padding:14px 16px;background:var(--soft);font-size:14px}
+.money div b{display:block;color:var(--ink);font-size:15px;margin-bottom:2px}
+
+/* pillars */
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(460px,100%),1fr));gap:20px;margin-top:40px}
+.pill{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.pill .head{display:flex;gap:16px;align-items:center}
+.pill .letter{flex:none;width:52px;height:52px;border-radius:14px;background:var(--lime);color:#0B1F17;font-weight:700;font-size:24px;display:grid;place-items:center}
+.pill .why{font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+.pill .why b{color:var(--ink)}
+.mini{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px}
+.mini span{padding:5px 10px;border-radius:8px;background:var(--soft);color:var(--ink)}
+.mini .arrow{background:none;padding:0;color:var(--muted)}
+
+/* more ideas */
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:16px;margin-top:36px}
+.idea{border-top:3px solid var(--lime);padding-top:14px;display:flex;flex-direction:column;gap:8px}
+.idea p{font-size:15px;color:var(--muted)}
+
+/* crm table */
+.tbl{overflow-x:auto;margin-top:32px;border-radius:16px;border:1px solid var(--line);background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:15px}
+th,td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--soft)}
+td:first-child{font-weight:600;color:var(--ink);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.pilltag{display:inline-block;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--lime);color:#0B1F17}
+
+/* timeline */
+.time{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:18px;margin-top:36px}
+.month{background:var(--forest-2);border-radius:18px;padding:24px;color:var(--on-forest);display:flex;flex-direction:column;gap:12px}
+.month .m{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.month ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:6px;color:var(--on-forest-muted)}
+
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:14px;margin-top:28px}
+.metric{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+.metric b{display:block;color:var(--ink);font-size:16px;margin-bottom:4px}
+.metric span{font-size:14px;color:var(--muted)}
+
+.legal{font-size:14px;color:var(--muted);background:var(--soft);border-radius:14px;padding:18px 20px;margin-top:32px;max-width:none}
+.legal b{color:var(--ink)}
+footer{padding-block:40px 56px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+footer b{color:var(--ink)}
+a{color:inherit}
+@media (prefers-reduced-motion:no-preference){.toc a{transition:border-color .15s}}
+</style>
+</head>
+<body>
+
+<style>
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px;margin-top:8px}
+.sum{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;min-width:0}
+.sum:hover,.sum:focus-visible{border-color:var(--forest-2);outline:none}
+.sum .k{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.sum h3{font-size:20px}
+.sum p{font-size:15px;color:var(--muted)}
+.sum .what{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
+.sum .what span{font-size:13px;padding:4px 10px;border-radius:999px;background:var(--soft);color:var(--ink)}
+.part{background:var(--lime);color:#0B1F17;padding-block:clamp(36px,5vw,56px)}
+.part .wrap{display:flex;flex-direction:column;gap:10px}
+.part .k{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.part h2{color:#0B1F17;font-size:clamp(30px,4vw,48px)}
+.part p{color:#1B3328;font-size:clamp(16px,1.3vw,19px)}
+.sub{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.band .sub{color:var(--on-forest-muted)}
+.pill .letter{font-size:16px}
+</style>
+
+<style>
+.chans{display:flex;flex-wrap:wrap;gap:6px}
+.chans span{font-size:12px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:var(--forest);color:var(--lime)}
+.band .chans span{background:var(--lime);color:#0B1F17}
+</style>
+<header class="hero">
+  <div class="wrap stack">
+    <div class="eyebrow">Návrh pro Bet-X · Zdeněk Matuška · říjen 2026</div>
+    <h1>Jak získat víc <span class="mark"><span>platících hráčů</span></span><br>bez affiliate partnerů</h1>
+    <p class="lead">Posílám návrh, jak bych řešil náhradu affiliate partnerů. Nejde mi jen o počet registrací. Měřítkem je pro mě <strong>první vklad</strong>, protože registrace bez vkladu vám nic nepřinese.</p>
+    <div class="note"><span class="dot" aria-hidden="true"></span><p><b>Není to detailní plán.</b> Vycházím z toho, co je vidět zvenku. Čísla, rozpočty a pořadí kroků bych doladil, až uvidím vaše data: odkud chodí registrace, kolik z nich vloží a kolik vás stojí partneři.</p></div>
+
+    <h2 style="font-size:clamp(22px,2.4vw,28px);margin-top:12px">Ve zkratce</h2>
+    <div class="summary">
+      <a class="sum" href="#cast1"><span class="k">Část 1 · hned</span><h3>Opravit, co dnes nefunguje</h3><p>Partneři posílají lidi rovnou do formuláře a berou provize i za hráče, kteří by přišli sami.</p><div class="what"><span>Vstupní stránky</span><span>Brandová slova</span><span>Pravidla pro partnery</span></div></a>
+      <a class="sum" href="#cast2"><span class="k">Část 2 · postupně</span><h3>Postavit vlastní kanály</h3><p>Místo cizích webů vlastní zdroje hráčů. Kontakty, data i důvěra pak zůstávají u vás.</p><div class="what"><span>YouTube + soutěž</span><span>Přiveď kamaráda</span><span>Tipovačka</span><span>Reklama</span><span>Podcasty</span></div></a>
+      <a class="sum" href="#cast3"><span class="k">Část 3 · průběžně</span><h3>Rozhýbat hráče, které už máte</h3><p>Nejlevnější vklad je od hráče, který už registraci má. Stačí ho oslovit ve správnou chvíli.</p><div class="what"><span>Segmentace</span><span>Reaktivační kampaně</span><span>VIP péče</span></div></a>
+    </div>
+    <a class="sum" href="audit.html" style="background:var(--forest);border-color:transparent;color:var(--on-forest-muted)"><span class="k" style="color:var(--lime)">Příloha · SEO audit bet-x.cz</span><h3 style="color:var(--on-forest)">Co jsem našel na vašem webu z pohledu SEO →</h3><p style="color:var(--on-forest-muted)">Osm největších chyb, srovnání s Fortunou a Tipsportem a co bych opravil jako první.</p></a>
+  </div>
+</header>
+
+<!-- ============ ČÁST 1 ============ -->
+<div class="part" id="cast1"><div class="wrap">
+  <span class="k">Část 1</span>
+  <h2>Opravit, co dnes nefunguje</h2>
+  <p>Tohle jsou rychlé kroky, které moc nestojí. Pomůžou všem kanálům, i partnerům, kteří zůstanou.</p>
+</div></div>
+
+<section id="chyba" style="background:var(--surface);border-bottom:1px solid var(--line)">
+  <div class="wrap stack">
+    <div class="sub">1.1 · Vstupní stránky</div>
+    <div class="chans"><span>Affiliate</span><span>Vstupní stránka</span></div>
+    <h2>Affiliate odkazy vedou rovnou na registraci</h2>
+    <p class="lead">Při procházení jsem narazil třeba na tenhle odkaz partnera: <code class="url">bet-x.cz/registration?referrerCode=bonusarena365</code>. Člověk klikne v článku nebo v reklamě a skončí rovnou ve formuláři. Nedozví se, <strong>proč se registrovat zrovna u vás, co dostane a co pro to musí udělat</strong>. Fortuna na to má samostatnou stránku s nabídkou, kroky a podmínkami. Za mě je to správná cesta.</p>
+
+    <div class="compare">
+      <div class="flow badf">
+        <div class="tag">Jak to je dnes</div>
+        <div class="steps">
+          <span class="chip">Web partnera</span><span class="arrow">→</span>
+          <span class="chip">Registrační formulář</span><span class="arrow">→</span>
+          <span class="chip drop">Odchod: „proč vlastně?“</span>
+        </div>
+        <p>Kdo není rozhodnutý předem, odejde. A kdo se zaregistruje, často nevloží, protože neví, na co má nárok.</p>
+      </div>
+      <div class="flow goodf">
+        <div class="tag">Jak bych to udělal</div>
+        <div class="steps">
+          <span class="chip">Web partnera</span><span class="arrow">→</span>
+          <span class="chip hot">Stránka s nabídkou</span><span class="arrow">→</span>
+          <span class="chip">Registrace</span><span class="arrow">→</span>
+          <span class="chip">Ověření</span><span class="arrow">→</span>
+          <span class="chip hot">První vklad</span>
+        </div>
+        <p>Stránka vysvětlí, proč se registrovat a co hráče čeká. Do formuláře pak přijde člověk, který ví, co dělá, a mnohem spíš dojde až k vkladu.</p>
+      </div>
+    </div>
+
+    <div class="anat">
+      <div class="lp" aria-label="Náčrt vstupní stránky">
+        <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="blk h"><b>Vsaď první tiket a získej až X Kč navíc</b>Nabídka pro nové hráče Bet-X</div>
+        <div class="row3"><div class="blk"><b>1</b>Registrace</div><div class="blk"><b>2</b>Ověření účtu</div><div class="blk"><b>3</b>Vklad a sázka</div></div>
+        <div class="blk"><b>Podmínky v jedné větě</b>Kolikrát protočit, do kdy, minimální kurz. Celé znění pod „Více“.</div>
+        <div class="blk"><b>Proč Bet-X</b>Licence MF ČR · rychlost výběrů · kurzy · aplikace</div>
+        <div class="cta">Chci bonus a registrovat se</div>
+        <div class="blk"><b>Časté dotazy</b>Jak dlouho trvá ověření? Jak rychle se vybírá?</div>
+        <div class="tiny">18+ · Účast na hazardní hře může vést ke vzniku závislosti</div>
+      </div>
+      <div class="stack">
+        <h3>Co by na stránce mělo být</h3>
+        <ol class="clean">
+          <li><span><b>Nadpis s konkrétní nabídkou.</b> Částka nebo freebet, žádné obecné „Vítejte“.</span></li>
+          <li><span><b>Tři kroky</b> a u každého, co za něj hráč dostane.</span></li>
+          <li><span><b>Podmínky lidsky.</b> Jedna věta, celé znění rozbalovací.</span></li>
+          <li><span><b>Důvěra.</b> Licence ministerstva financí a rychlost výběrů. Lidi se nejvíc bojí, jestli dostanou své peníze.</span></li>
+          <li><span><b>Jedno tlačítko,</b> na mobilu přichycené dole.</span></li>
+          <li><span><b>Časté dotazy</b> k ověření účtu a výběrům.</span></li>
+          <li><span><b>Varianty podle zdroje:</b> fotbal, hokej, Liga mistrů, konkrétní partner nebo kanál.</span></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="brand">
+  <div class="wrap stack">
+    <div class="sub">1.2 · Brandová klíčová slova</div>
+    <div class="chans"><span>PPC: Google Ads · Sklik</span><span>SEO</span><span>Affiliate</span></div>
+    <h2>Brandová slova: platíte provize i za hráče, kteří by přišli sami</h2>
+    <p class="lead">Všiml jsem si, že partneři hodně cílí na <strong>vaše brandová slova</strong>, třeba „bet-x bonus“. Kdo tohle hledá, už se rozhodl. Partner ho jen zachytí po cestě a vy za něj zaplatíte provizi, kterou platit nemusíte.</p>
+    <div class="kw" aria-label="Příklady brandových dotazů">
+      <span>bet-x bonus</span><span>bet-x registrace</span><span>bet-x promo kód</span><span>bet-x vstupní bonus</span><span>bet-x aplikace</span><span>bet-x recenze</span><span>bet-x freebet</span>
+    </div>
+    <figure style="margin:8px 0 0;display:flex;flex-direction:column;gap:14px">
+      <img src="google-betx-promo-kod.png" width="2000" height="1150" alt="Výsledky Googlu na dotaz „bet-x promo kód“: první je Vyhraj.cz, druhá stránka Bet-X s titulkem „Promo“, pod ní BetArena.cz, CasinoArena.cz a Tenis-Živě.cz s titulky o promo kódu a bonusu 50 000 Kč" style="width:100%;height:auto;border-radius:14px;border:1px solid var(--line)">
+      <figcaption style="display:flex;flex-direction:column;gap:10px;max-width:none">
+        <p><b style="color:var(--ink)">Takhle dnes vypadá Google na dotaz „bet-x promo kód“.</b> Vaše stránka je sice druhá, ale má titulek jen „Promo“. Nepíše se v ní nic o kódu ani o bonusu, tedy o tom, co člověk hledá. Kolem jsou affiliate weby s titulky jako „BetX promo kód: Vstupní bonus 50 000 Kč a free spiny“. Lidi pak kliknou na ně a vy za stejného hráče, který by k vám přišel sám, zaplatíte partnerovi provizi.</p>
+        <p>Stačilo by upravit meta title a popis, třeba na „BETX promo kód 2026: vstupní bonus až 50 000 Kč | BETX“, a na stránku dát kód i postup, kam ho zadat. Z pěti výsledků na obrazovce jsou čtyři affiliate weby.</p>
+      </figcaption>
+    </figure>
+    <div class="money">
+      <div><b>1. Analýza</b>Zjistil bych, na která slova partneři cílí a kolik registrací z nich přichází.</div>
+      <div><b>2. Vlastní stránky</b>Na každé takové slovo stránka přímo na bet-x.cz, která odpoví na dotaz a dovede člověka k vkladu.</div>
+      <div><b>3. Brand v reklamě</b>Vlastní kampaň na brand a partnerům bidování na brand zakázat.</div>
+      <div><b>4. Úspora</b>Ušetřené provize bych dal do vlastních kanálů z části 2.</div>
+    </div>
+    <p style="font-size:14px;color:var(--muted)">Seznam slov je zatím můj odhad zvenku. Skutečná čísla ukáže analýza klíčových slov (Marketing Miner, Ahrefs, data ze Skliku a Google Ads).</p>
+  </div>
+</section>
+
+<section id="partneri" class="band">
+  <div class="wrap stack">
+    <div class="sub">1.3 · Partneři, kteří zůstanou</div>
+    <div class="chans"><span>Affiliate</span><span>Cashbackové portály</span></div>
+    <h2>S affiliate partnery je potřeba víc pracovat</h2>
+    <p class="lead">Všechny partnery bych hned neodstřihl. Ty dobré bych si nechal, ale s jasnými pravidly a hlavně s osobním vztahem. Pravidla ohlídají rozpočet. Díky vztahu začne partner pro vás sám přemýšlet.</p>
+    <div class="two">
+      <div class="box">
+        <h3>Pravidla pro partnery</h3>
+        <ul class="ticks">
+          <li><b>Odkazy jen na schválené vstupní stránky,</b> ne na formulář.</li>
+          <li><b>Zákaz bidování na brand</b> (Bet-X, Bet-X bonus…) v Google Ads a Skliku.</li>
+          <li><b>Odměna za první vklad,</b> ne za registraci.</li>
+          <li><b>Schvalování kreativ</b> a dodržení pravidel reklamy na hazard.</li>
+          <li><b>Měsíční přehled kvality:</b> vklady, retence, storna.</li>
+        </ul>
+      </div>
+      <div class="box quote-wrap">
+        <p class="quote">V minulé práci jsme neměli nejvyšší provize na trhu. S partnery jsme ale chodili na obědy a společně řešili, jak věci posunout.</p>
+        <div class="stat"><span class="n">tisíce</span><span class="l">leadů měsíčně, které jsme díky tomu měli</span></div>
+      </div>
+    </div>
+    <div class="two">
+      <div class="box">
+        <h3>Jak bych vztah s partnery budoval</h3>
+        <ul class="ticks">
+          <li>S top 10 partnery bych se osobně potkával jednou za čtvrt roku.</li>
+          <li>Kalendář zápasů a akcí bych jim posílal dopředu, aby stihli připravit obsah.</li>
+          <li>Nejlepším partnerům exkluzivní nabídky místo plošného zvyšování provizí.</li>
+          <li><b>Společné e-mailové kampaně na vaše akce,</b> třeba losování o letecký zájezd na fotbal pro hráče, kteří za měsíc prosází přes 1 000 Kč. Víc o tom v <a href="#youtube">části 2.1</a>.</li>
+          <li>Jeden kontakt na Bet-X a rychlé odpovědi.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Cashbackové portály: partner, kterého bych naopak posílil</h3>
+        <p>Velké cashbackové portály mají statisíce registrovaných uživatelů, kteří jsou zvyklí reagovat na nabídky. Jedna dobře postavená kampaň, třeba bonus a k tomu cashback za první vklad, dokáže přivést hodně registrací najednou. Platí se jen za výsledek a místo desítek malých partnerů řešíte jednoho velkého.</p>
+        <p style="font-size:14px;color:var(--on-forest-muted)">Předem bych ověřil, které portály hazard berou a za jakých podmínek.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ČÁST 2 ============ -->
+<div class="part" id="cast2"><div class="wrap">
+  <span class="k">Část 2</span>
+  <h2>Postavit vlastní kanály</h2>
+  <p>Každý z těchto kanálů dělá práci, za kterou dnes platíte partnerům. Rozdíl je v tom, že kontakty, data i důvěra zůstávají u vás.</p>
+</div></div>
+
+<section id="youtube" class="band">
+  <div class="wrap stack">
+    <div class="sub">2.1 · Hlavní kanál</div>
+    <div class="chans"><span>YouTube</span><span>Reels · Shorts · TikTok</span><span>Soutěž</span></div>
+    <h2>Vlastní YouTube kanál o fotbale</h2>
+    <p class="lead">Partner přivede hráče jednou. Vlastní kanál přivádí nové lidi každé kolo a zároveň připomíná značku těm, kdo už u vás účet mají. Když se to dělá pravidelně, buduje to <strong>značku a důvěru</strong> a je to přirozené místo pro reklamu na Bet-X. A obsah vám zůstane.</p>
+
+    <div class="two">
+      <div class="box quote-wrap">
+        <p class="quote">Zkusil jsem si to sám. Natočil jsem video ze zápasu Plzeň – Bohemians a bylo to moje vůbec první video.</p>
+        <img src="youtube-plzen-bohemians.jpg" width="1400" height="1047" alt="Můj YouTube vlog Plzeň – Bohemians: 2,2 tis. zhlédnutí na kanálu s několika odběrateli" style="width:100%;height:auto;border-radius:12px">
+        <div class="stat"><span class="n">2 200</span><span class="l">zhlédnutí na YouTube na kanálu skoro bez odběratelů</span></div>
+        <div class="stat"><span class="n">~10 000</span><span class="l">zhlédnutí na Reels ze stejného videa</span></div>
+      </div>
+      <div class="box">
+        <h3>Jak by kanál fungoval</h3>
+        <ul class="ticks">
+          <li><b>Tvůrce:</b> fotbalový youtuber nebo komentátor, který umí zápasy vyprávět a lidi mu věří.</li>
+          <li><b>Formáty:</b> rozbor zápasu, preview kola, atmosféra ze stadionu, tipy na víkend.</li>
+          <li><b>Rytmus:</b> 1 až 2 delší videa týdně podle kola Chance Ligy a evropských pohárů.</li>
+          <li><b>Značka:</b> kanál pod jménem tvůrce, Bet-X jako partner. Působí to důvěryhodněji než firemní reklama.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box">
+      <h3>Sociální sítě: z jednoho videa deset kusů obsahu</h3>
+      <p>Z každého delšího videa jde nastříhat sérii krátkých na Reels, Shorts a TikTok. Krátká videa mají největší dosah, táhnou lidi zpátky na kanál a často fungují líp než samotné video.</p>
+      <div class="steps" style="margin-top:4px">
+        <span class="chip hot">Video ze zápasu</span><span class="arrow">→</span>
+        <span class="chip">5–8 krátkých klipů</span><span class="arrow">→</span>
+        <span class="chip">Reels · Shorts · TikTok</span><span class="arrow">→</span>
+        <span class="chip">Noví odběratelé</span><span class="arrow">→</span>
+        <span class="chip hot">Další video</span>
+      </div>
+    </div>
+
+    <h3 style="margin-top:20px">Soutěž o lístky: propojí obsah s vklady</h3>
+    <p>Kanál přinese dosah a soutěž z něj udělá registrace a aktivní hráče. Stejná akce osloví nové lidi i ty, kdo u vás dlouho nevsadili. Rozeslat ji můžou i affiliate partneři.</p>
+    <div class="time" style="margin-top:4px">
+      <div class="month"><span class="m">Pravidla</span><h3>Losování o zápas, na který se lístky jen tak nekoupí</h3><ul><li>Kdo za měsíc prosází víc než 1 000 Kč, je v losování</li><li>Cena: lístky na velký zápas doma, hlavní cena <b>letecký zájezd na fotbal</b> do zahraničí</li><li>Platí pro nové i stávající hráče</li></ul></div>
+      <div class="month"><span class="m">Distribuce</span><h3>Jedna akce, čtyři kanály</h3><ul><li>Video a klipy na kanálu soutěž oznámí</li><li>E-mail a push všem registrovaným</li><li>Placená kampaň na nové registrace se stránkou soutěže</li><li>E-maily affiliate partnerů a podcasty</li></ul></div>
+      <div class="month"><span class="m">Výsledek</span><h3>Co se tím zvedne</h3><ul><li>Nové registrace a první vklady</li><li>Návrat neaktivních hráčů</li><li>Ze zájezdu s výhercem se natočí vlog a klipy, které lákají na další kolo soutěže</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="kanaly" style="background:var(--soft)">
+  <div class="wrap stack">
+    <div class="sub">2.2 – 2.5 · Další vlastní kanály</div>
+    <h2>Další kanály, které na YouTube navazují</h2>
+    <div class="pillars">
+      <article class="pill">
+        <div class="head"><span class="letter">2.2</span><h3>Doporučení: program „Přiveď kamaráda“</h3></div>
+        <div class="chans"><span>Doporučení</span><span>CRM</span><span>Push notifikace</span></div>
+        <p style="background:var(--lime);color:#0B1F17;border-radius:12px;padding:12px 16px;font-size:15px"><b>Tenhle program už máte:</b> <a href="https://bet-x.cz/bonuses/prived-kamarada" target="_blank" rel="noopener">bet-x.cz/bonuses/prived-kamarada</a>. Nechci ho proto vymýšlet znovu. Chci ho víc dostat k hráčům.</p>
+        <p>Hráčům bych ho připomínal přes CRM a notifikace, nejlíp po výhře nebo po prvním vkladu, kdy mají dobrou náladu. Přidal bych možnost sdílet tiket s odkazem na registraci a pro VIP hráče vyšší odměnu.</p>
+        <div class="mini"><span>Hráč sdílí odkaz nebo tiket</span><span class="arrow">→</span><span>Kamarád se registruje</span><span class="arrow">→</span><span>Vloží</span><span class="arrow">→</span><span>Oba dostanou bonus</span></div>
+        <p class="why"><b>Proč:</b> část hráčů bude ráda sdílet výměnou za bonus. Z vlastních hráčů se tak stanou partneři, kteří nic nestojí, dokud nepřivedou platícího hráče.</p>
+      </article>
+      <article class="pill">
+        <div class="head"><span class="letter">2.3</span><h3>Tipovačka zdarma</h3></div>
+        <div class="chans"><span>Soutěž</span><span>Push notifikace</span></div>
+        <p>Týdenní soutěž „Tipni 5 zápasů víkendu“ zdarma, o věcné ceny nebo freebety. Hraje se po registraci, má žebříčky a ligy s kamarády a výsledky chodí v notifikacích.</p>
+        <div class="mini"><span>Tip zdarma</span><span class="arrow">→</span><span>Registrace</span><span class="arrow">→</span><span>„Tvůj tip vyšel, vsaď si ho naostro“</span><span class="arrow">→</span><span>První vklad</span></div>
+        <p class="why"><b>Proč:</b> nahradí tipařské weby partnerů a kontakty i data zůstanou u vás.</p>
+      </article>
+      <article class="pill">
+        <div class="head"><span class="letter">2.4</span><h3>PPC reklama a obsah na webu</h3></div>
+        <div class="chans"><span>PPC: Google Ads · Sklik</span><span>Meta</span><span>SEO</span><span>Remarketing</span></div>
+        <p>Reklama ve vyhledávání na „sázkový bonus“, „tipy na zápas“ nebo „kurzy na …“, vždy na vstupní stránku z části 1. K tomu tipy a preview zápasů na webu kvůli SEO a remarketing na lidi, kteří registraci nedokončili.</p>
+        <div class="mini"><span>Hledání „tip na zápas“</span><span class="arrow">→</span><span>Preview na bet-x.cz</span><span class="arrow">→</span><span>Nabídka</span><span class="arrow">→</span><span>Vklad</span></div>
+        <p class="why"><b>Proč:</b> lidi, kteří dnes chodí přes weby partnerů, si přivedete sami a za cenu, kterou máte pod kontrolou.</p>
+        <p style="background:var(--lime);color:#0B1F17;border-radius:12px;padding:14px 16px;font-size:15px"><b>Tady vidím největší potenciál.</b> Když dnes někdo hledá Bet-X, vidí ve vyhledávání reklamy konkurence. Konkurence cílí i na dotazy, ze kterých by mohli být vaši hráči, třeba „sázkový bonus“ nebo „tip na zápas“. Vlastní brandová kampaň tyhle lidi udrží a kampaně na obecné dotazy přivedou nové, které dnes berou konkurence nebo partneři (viz <a href="#brand">část 1.2</a>).</p>
+        <p class="why"><b>Poznámka:</b> tenhle bod je schválně obecný. Patří pod něj celý marketingový mix: vyhledávání (Google Ads, Sklik), Meta, pokud se podaří reklamu na hazard rozjet, až po Pinterest. Každý kanál bych otestoval a hodnotil podle ceny za první vklad.</p>
+      </article>
+      <article class="pill">
+        <div class="head"><span class="letter">2.5</span><h3>Podcasty o fotbale a sportu</h3></div>
+        <div class="chans"><span>Podcasty</span><span>Promo kódy</span></div>
+        <p>Dlouhodobá spolupráce s fotbalovými a hokejovými podcasty: zmínka v díle, vlastní promo kód a vlastní vstupní stránka pro každý pořad. Platil bych fixně za díl, případně fix a odměnu za vklad.</p>
+        <div class="mini"><span>Díl podcastu</span><span class="arrow">→</span><span>Kód a stránka pořadu</span><span class="arrow">→</span><span>Registrace</span><span class="arrow">→</span><span>Vklad</span></div>
+        <p class="why"><b>Proč:</b> posluchači moderátorům věří a jsou přesně ta cílovka. Podle kódu bude vidět, který pořad přivádí platící hráče.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="dalsi">
+  <div class="wrap stack">
+    <div class="sub">2.6 · Na později</div>
+    <div class="chans"><span>Média</span><span>Eventy</span><span>Influenceři</span><span>Aplikace</span><span>Sponzoring</span></div>
+    <h2>Další nápady na vyzkoušení</h2>
+    <div class="grid3">
+      <div class="idea"><h3>Mediální partnerství za fixní cenu</h3><p>Livescore aplikace a sportovní weby: placená pozice nebo sekce s kurzy místo provize za každého hráče.</p></div>
+      <div class="idea"><h3>Kampaně na velké události</h3><p>Liga mistrů, MS v hokeji, derby. Nabídky a stránky připravené dopředu, kdy je zájem o sázení nejvyšší.</p></div>
+      <div class="idea"><h3>Sportovní tipéři</h3><p>Známí tipéři a bývalí sportovci jako tváře obsahu: rozbory zápasů na webu a na sítích Bet-X.</p></div>
+      <div class="idea"><h3>Aplikace a ASO</h3><p>Lepší profil v App Storu a Google Play. Hráč s aplikací sází častěji a dá se oslovit notifikací.</p></div>
+      <div class="idea"><h3>Regionální sponzoring</h3><p>Kluby a sportovní bary v regionech. Být vidět tam, kde se o sportu opravdu mluví.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ČÁST 3 ============ -->
+<div class="part" id="cast3"><div class="wrap">
+  <span class="k">Část 3</span>
+  <h2>Rozhýbat hráče, které už máte</h2>
+  <p>Nejlevnějšího platícího hráče už máte v databázi. Část 2 přivádí nové registrace a CRM se postará, aby z nich byli aktivní hráči.</p>
+</div></div>
+
+<section id="crm" style="background:var(--surface);border-bottom:1px solid var(--line)">
+  <div class="wrap stack">
+    <div class="sub">3.1 · Automatizace podle fáze hráče</div>
+    <div class="chans"><span>E-mailing</span><span>Push notifikace</span><span>SMS</span><span>CRM</span></div>
+    <h2>E-mailing a notifikace podle toho, kde se hráč zasekl</h2>
+    <p class="lead">E-mail, push a SMS podle toho, v jaké fázi hráč je, a podle jeho oblíbeného sportu a týmu. Do zpráv bych zapojil i „Přiveď kamaráda“, tipovačku a soutěž o lístky.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Segment</th><th>Kdy</th><th>Co mu poslat</th><th>Cíl</th></tr></thead>
+        <tbody>
+          <tr><td>Registrace bez ověření</td><td>Do 24 hodin</td><td>Jak účet ověřit za 2 minuty a co ho po ověření čeká</td><td><span class="pilltag">Ověření</span></td></tr>
+          <tr><td>Ověřený bez vkladu</td><td>1., 3. a 7. den</td><td>Připomenutí nabídky, nejbližší zápas jeho týmu s kurzem</td><td><span class="pilltag">První vklad</span></td></tr>
+          <tr><td>Jeden vklad a dost</td><td>Po 7 dnech</td><td>Tip na víkend, „Přiveď kamaráda“</td><td><span class="pilltag">Druhý vklad</span></td></tr>
+          <tr><td>Neaktivní 14 až 30 dní</td><td>Před zápasem jeho týmu</td><td>Notifikace s kurzem, malý freebet na návrat</td><td><span class="pilltag">Návrat</span></td></tr>
+          <tr><td>Neaktivní 60+ dní</td><td>Velké události</td><td>Soutěž o lístky, pozvánka do tipovačky</td><td><span class="pilltag">Reaktivace</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="segmenty" style="background:var(--soft)">
+  <div class="wrap stack">
+    <div class="sub">3.2 · Segmentace</div>
+    <div class="chans"><span>CRM</span><span>E-mailing</span><span>Push notifikace</span></div>
+    <h2>Segmentace v CRM: každý hráč dostane jinou zprávu</h2>
+    <p class="lead">Fáze hráče je jen začátek. V CRM bych hráče dělil i podle toho, <strong>co a jak sází, odkud přišli a jakou pro vás mají hodnotu</strong>. Až potom má smysl jim psát.</p>
+    <div class="grid3" style="margin-top:20px">
+      <div class="idea"><h3>Podle hodnoty</h3><p>VIP, střední a malí hráči. Každá skupina má jiný kanál i tón: VIP osobně, ostatní automaticky.</p></div>
+      <div class="idea"><h3>Podle sportu a týmu</h3><p>Fotbal, hokej, tenis a oblíbený tým. Zpráva přijde před zápasem, který hráče opravdu zajímá.</p></div>
+      <div class="idea"><h3>Podle stylu sázení</h3><p>Live, předzápasové tikety, kombinace. Víkendový nebo večerní hráč. Podle toho obsah i čas odeslání.</p></div>
+      <div class="idea"><h3>Podle zdroje</h3><p>Affiliate, YouTube, „Přiveď kamaráda“, cashback. Hráči z YouTube bych posílal obsah, hráči z cashbacku nabídku.</p></div>
+      <div class="idea"><h3>Podle vztahu k bonusům</h3><p>Kdo jen bere bonusy a odchází, dostane jich méně. Kdo hraje i bez nich, tomu bych dal spíš zážitek než peníze.</p></div>
+      <div class="idea"><h3>Podle rizika odchodu</h3><p>Hráče, kterému klesá frekvence sázek, bych oslovil dřív, než odejde ke konkurenci. Ne až po 60 dnech ticha.</p></div>
+      <div class="idea"><h3>Podle kanálu</h3><p>Aplikace, nebo web. Kdo má zapnuté notifikace a kdo čte e-maily. Každému tam, kde opravdu reaguje.</p></div>
+      <div class="idea"><h3>Životní momenty</h3><p>Narozeniny, výročí registrace, první výhra, zápas oblíbeného týmu v Lize mistrů. Malá pozornost ve správnou chvíli.</p></div>
+      <div class="idea"><h3>Odpovědné hraní</h3><p>Hráči s rizikovým chováním nedostávají žádný marketing. Místo toho nabídka limitů a kontakt na pomoc.</p></div>
+    </div>
+
+    <div class="box" style="margin-top:20px">
+      <h3>Reaktivační kampaně jako pravidelný test</h3>
+      <p>Každý měsíc bych neaktivním hráčům poslal dvě až tři různé motivace a sledoval, která je vrátí nejlíp a nejlevněji. Co funguje, rozjedu ve větším. Co nefunguje, vyměním.</p>
+      <div class="kw">
+        <span>Freebet na návrat</span><span>Tip od experta na zápas jeho týmu</span><span>Soutěž o zájezd na fotbal</span><span>Video z YouTube kanálu</span><span>Pozvánka do tipovačky</span><span>„Chybíš nám“ bez bonusu</span>
+      </div>
+      <p style="font-size:14px;color:var(--muted)">Každý test bude mít kontrolní skupinu, která nedostane nic. Jen tak se dá poznat, kolik hráčů vrátila kampaň a kolik by se vrátilo samo.</p>
+    </div>
+  </div>
+</section>
+
+<section id="vip" class="band">
+  <div class="wrap stack">
+    <div class="sub">3.3 · VIP hráči</div>
+    <div class="chans"><span>Telefon</span><span>E-mail</span><span>Osobní manažer</span></div>
+    <h2>VIP hráče bych oslovoval osobně, telefonem a e-mailem</h2>
+    <p class="lead">Nejcennější hráče bych neřešil automatem. Volal bych jim a psal od konkrétního člověka, aby viděli, že o ně Bet-X stojí a bere je jako součást.</p>
+    <div class="two">
+      <div class="box">
+        <h3>Jak s nimi komunikovat</h3>
+        <ul class="ticks">
+          <li><b>Osobní manažer</b> s vlastním telefonem a e-mailem, žádné info@.</li>
+          <li><b>Pravidelný telefonát:</b> jak jste spokojený, co bychom mohli zlepšit, co vám u nás chybí.</li>
+          <li><b>Když hráčův nápad zavedete,</b> dejte mu vědět, že pomohl.</li>
+          <li><b>Pozvánky na zápasy a akce</b> Bet-X, nové funkce jako první.</li>
+          <li><b>Malé pozornosti</b> k narozeninám nebo k výročí místo plošných bonusů.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Proč se to vyplatí</h3>
+        <ul class="ticks">
+          <li><b>Zůstanou déle.</b> Bonus jim nabídne každý, osobní vztah málokdo.</li>
+          <li><b>Doporučí vás přátelům.</b> Bonitní hráči mají bonitní kamarády a jejich doporučení má váhu.</li>
+          <li><b>Řeknou vám, co zlepšit</b> na webu, v aplikaci i v nabídce dřív, než na to přijdou ostatní.</li>
+          <li><b>VIP verze „Přiveď kamaráda“</b> s vyšší odměnou nebo zážitkem pro oba.</li>
+        </ul>
+        <p style="font-size:14px;color:var(--on-forest-muted)">VIP pro mě znamená solventní hráč, který hraje pro zábavu. Před zařazením do VIP bych ověřil, že si sázky může dovolit.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="seo" style="background:var(--surface);border-top:1px solid var(--line)">
+  <div class="wrap stack">
+    <div class="sub">Vyhledávání</div>
+    <div class="chans"><span>SEO</span></div>
+    <h2>SEO: aby vás lidi našli ve vyhledávání sami, bez partnera</h2>
+    <p class="lead">Každý hráč, který Bet-X najde v Googlu sám, je hráč bez provize. Dnes ale web vyhledávačům skoro nic neukazuje. Podrobně to rozebírám v příloze.</p>
+    <div class="box">
+      <ul class="ticks">
+        <li><b>Stránky lig a zápasů se šablonou titulku, H1 a popisu.</b> Tisíce nových vstupních bodů z vyhledávání bez psaní textů.</li>
+        <li><b>Doplnit nadpisy H1.</b> Dnes je nemá žádná stránka, úvodní, ligy, registrace ani novinky.</li>
+        <li><b>Brandové stránky z <a href="#brand">části 1.2</a>:</b> bonus, promo kód, aplikace, registrace. Tady dnes provize berou partneři.</li>
+        <li><b>Opravit sitemapu a 404.</b> Polské adresy, hreflang, dvojitá lomítka, automatické generování z nabídky.</li>
+      </ul>
+    </div>
+    <a class="sum" href="audit.html" style="background:var(--forest);border-color:transparent;color:var(--on-forest-muted)"><span class="k" style="color:var(--lime)">Příloha · SEO audit bet-x.cz</span><h3 style="color:var(--on-forest)">Celý audit a srovnání s Fortunou a Tipsportem →</h3></a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span><b>Zdeněk Matuška</b> · marketingový stratég a affiliate manažer · zdenekmatuska.cz</span>
+    <span><a href="audit.html">Příloha: SEO audit bet-x.cz</a> · Návrh, říjen 2026</span>
+  </div>
+</footer>
+
+</body>
+</html>

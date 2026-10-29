@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,-apple-system,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bet-X: SEO audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: stejný styl jako hlavní návrh – světlá plocha, zelené pásy, limetka pro to podstatné; nálezy seřazené podle závažnosti */
+:root{
+  --bg:#FAFCE8; --surface:#FFFFFF; --soft:#EFF7E4; --line:#DDE9E3;
+  --ink:#0B1F17; --text:#2B3B33; --muted:#5A6B62;
+  --forest:#0F3D2E; --forest-2:#1B5745; --lime:#D2F24C; --on-forest:#F3F8EE; --on-forest-muted:#B9CDC2;
+  --bad:#B4432F; --bad-soft:#FBEAE5; --warn:#9A6A00; --warn-soft:#FBF3DC; --ok:#2F7A4F;
+  --font:Poppins,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:light;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1A14; --surface:#11261D; --soft:#132B21; --line:#24402F;
+  --ink:#F1F6EC; --text:#D4E0D8; --muted:#9DB2A6;
+  --forest:#08140F; --forest-2:#1B5745; --lime:#D2F24C; --on-forest:#F3F8EE; --on-forest-muted:#A9BFB3;
+  --bad:#F0907C; --bad-soft:#2E1813; --warn:#E8C062; --warn-soft:#2A2310; --ok:#7FD09E; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1A14; --surface:#11261D; --soft:#132B21; --line:#24402F;
+  --ink:#F1F6EC; --text:#D4E0D8; --muted:#9DB2A6;
+  --forest:#08140F; --forest-2:#1B5745; --lime:#D2F24C; --on-forest:#F3F8EE; --on-forest-muted:#A9BFB3;
+  --bad:#F0907C; --bad-soft:#2E1813; --warn:#E8C062; --warn-soft:#2A2310; --ok:#7FD09E; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:clamp(44px,6vw,80px)}
+h1,h2,h3{color:var(--ink);text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,4.6vw,56px);line-height:1.08;letter-spacing:-0.03em;font-weight:700}
+h2{font-size:clamp(25px,3vw,38px);line-height:1.15;letter-spacing:-0.02em;font-weight:700}
+h3{font-size:19px;line-height:1.3;font-weight:600}
+p{margin:0;max-width:66ch}
+a{color:inherit}
+.stack{display:flex;flex-direction:column;gap:18px}
+.mark{position:relative;display:inline-block;white-space:nowrap}
+.mark::before{content:"";position:absolute;left:-6px;right:-6px;top:16%;bottom:8%;background:var(--lime);border-radius:8px;z-index:0}
+.mark>span{position:relative;z-index:1;color:#0B1F17}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--forest-2)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .eyebrow{color:var(--lime)}}
+:root[data-theme="dark"] .eyebrow{color:var(--lime)}
+.lead{font-size:clamp(17px,1.4vw,20px);color:var(--muted)}
+.lead strong{color:var(--ink);font-weight:600}
+.back{display:inline-flex;gap:8px;align-items:center;font-size:14px;font-weight:500;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--surface);padding:7px 14px;border-radius:999px;align-self:flex-start}
+.back:hover,.back:focus-visible{border-color:var(--forest-2);outline:none}
+.note{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;max-width:760px}
+.note b{color:var(--ink)}
+.note .dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--lime);margin-top:8px}
+code{font-family:var(--mono);font-size:.86em;background:var(--soft);border:1px solid var(--line);padding:1px 6px;border-radius:6px;color:var(--ink);word-break:break-all}
+
+/* čísla nahoře */
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:14px;margin-top:8px}
+.num{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:4px}
+.num .n{font-size:clamp(30px,3.4vw,40px);font-weight:700;letter-spacing:-0.02em;color:var(--ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.num .n small{font-size:.5em;font-weight:600;color:var(--muted);letter-spacing:0}
+.num span{font-size:14px;color:var(--muted)}
+
+/* nálezy */
+.findings{display:flex;flex-direction:column;gap:16px;margin-top:28px}
+.f{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px;display:grid;grid-template-columns:44px 1fr;gap:6px 18px;min-width:0}
+.f .no{grid-row:span 2;width:40px;height:40px;border-radius:12px;background:var(--forest);color:var(--lime);font-weight:700;display:grid;place-items:center;font-variant-numeric:tabular-nums}
+.f .top{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.f .body{display:flex;flex-direction:column;gap:12px;min-width:0}
+.f ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.f ul b{color:var(--ink)}
+.sev{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 10px;border-radius:999px}
+.sev.crit{background:var(--bad-soft);color:var(--bad)}
+.sev.high{background:var(--warn-soft);color:var(--warn)}
+.sev.mid{background:var(--soft);color:var(--muted)}
+.fix{background:var(--soft);border-radius:12px;padding:12px 16px;font-size:15px}
+.fix b{color:var(--ink)}
+@media (max-width:520px){.f{grid-template-columns:1fr}.f .no{grid-row:auto}}
+
+/* srovnání */
+.band{background:var(--forest);color:var(--on-forest-muted)}
+.band h2,.band h3{color:var(--on-forest)}
+.band .eyebrow{color:var(--lime)}
+.band .lead{color:var(--on-forest-muted)}
+.band .lead strong{color:var(--on-forest)}
+.tbl{overflow-x:auto;margin-top:28px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:15px;color:var(--text)}
+th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--soft)}
+tbody th{font-weight:600;color:var(--ink);width:24%}
+tr:last-child td,tr:last-child th{border-bottom:0}
+td.num-c{font-variant-numeric:tabular-nums}
+.y,.x,.q{font-weight:600}
+.y{color:var(--ok)} .x{color:var(--bad)} .q{color:var(--muted)}
+.lessons{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:18px;margin-top:28px}
+.lesson{background:var(--forest-2);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:10px;color:var(--on-forest-muted)}
+.lesson .k{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+
+/* priority */
+.prio{margin:24px 0 0;padding:0;list-style:none;counter-reset:n;display:flex;flex-direction:column;gap:14px}
+.prio li{counter-increment:n;display:grid;grid-template-columns:36px 1fr;gap:14px;align-items:start}
+.prio li::before{content:counter(n);width:32px;height:32px;border-radius:50%;background:var(--lime);color:#0B1F17;font-weight:700;font-size:14px;display:grid;place-items:center}
+.prio b{color:var(--ink)}
+.link-box{background:var(--lime);color:#0B1F17;border-radius:16px;padding:18px 20px;max-width:none}
+.link-box b{color:#0B1F17}
+.link-box a{color:#0B1F17;font-weight:600}
+footer{padding-block:40px 56px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;justify-content:space-between}
+footer b{color:var(--ink)}
+@media (prefers-reduced-motion:no-preference){.back{transition:border-color .15s}}
+</style>
+</head>
+<body>
+
+</head>
+<body>
+
+<header>
+  <section style="padding-bottom:clamp(32px,4vw,48px)">
+    <div class="wrap stack">
+      <a class="back" href="index.html">← Zpět na návrh: noví platící hráči</a>
+      <div class="eyebrow">Příloha · SEO audit bet-x.cz · 28. 10. 2026</div>
+      <h1>Co jsem našel na webu <span class="mark"><span>bet-x.cz</span></span></h1>
+      <p class="lead">V části 2.4 návrhu počítám s tím, že si hráče z vyhledávání přivedete sami, bez partnera. Prošel jsem proto web z pohledu SEO. Dnes by to podle mě nešlo: <strong>obsah se skládá až v prohlížeči, Google zná jen 32 adres a ani články v Novinkách se do Googlu nedostanou.</strong> Dole je srovnání s Fortunou a Tipsportem a pořadí, ve kterém bych to opravoval.</p>
+      <div class="note"><span class="dot" aria-hidden="true"></span><p><b>Audit jsem dělal zvenku, bez přístupu do Search Console.</b> Díval jsem se na zdrojový kód, sitemapu, robots.txt a vybrané stránky v prohlížeči. Rychlost a skutečný stav indexace bych doměřil v Search Console a PageSpeed.</p></div>
+      <div class="nums">
+        <div class="num"><span class="n">4 <small>slova</small></span><span>text v HTML stránky Premier League, než se spustí JavaScript</span></div>
+        <div class="num"><span class="n">32 <small>adres</small></span><span>v sitemapě Bet-X. Fortuna jich má přes 3 100.</span></div>
+        <div class="num"><span class="n">0 <small>odkazů</small></span><span>z menu lig. Google se z jedné ligy nedostane na další.</span></div>
+        <div class="num"><span class="n">0 <small>článků</small></span><span>v Googlu. Články jsou v rámečku z jiné domény a mají noindex.</span></div>
+      </div>
+    </div>
+  </section>
+</header>
+
+<section style="background:var(--surface);border-block:1px solid var(--line)">
+  <div class="wrap stack">
+    <div class="eyebrow">Největší chyby, seřazené podle dopadu</div>
+    <h2>Co vás brzdí ve vyhledávání</h2>
+
+    <div class="findings">
+      <article class="f">
+        <span class="no">1</span>
+        <div class="top"><h3>Web je prázdná aplikace, obsah vzniká až v prohlížeči</h3></div>
+        <div class="body">
+          <p>Celý web je aplikace v Angularu. Server pošle na každou adresu stejný prázdný obal s 4 slovy textu a bez jediného odkazu. Ve zdrojovém kódu má proto <b>každá stránka stejný titulek</b> „Sportovní sázky | BETX“, stejný popis a <b>prázdný canonical</b> <code>href=""</code>.</p>
+          <ul>
+            <li>Skládání stránky JavaScriptem samo o sobě chyba není, Tipsport to má podobně (v HTML 15 slov). Tipsport ale vyvažuje tisíci stránek a odkazů, které Bet-X nemá.</li>
+            <li>Web má pro roboty předgenerované verze (Rendertron). Je to další díl, který se může rozbít. Při testu vrátil úvodní stránku s chybou 502.</li>
+            <li>Fortuna posílá hotové HTML: úvodní stránka má rovnou přes 980 slov a 140 odkazů. To je nejbezpečnější varianta.</li>
+          </ul>
+          <p class="fix"><b>Co bych udělal:</b> v Search Console přes Kontrolu URL ověřit, co Google opravdu dostává. Dlouhodobě přejít na vykreslování na serveru (Angular Universal / SSR), nebo aspoň hlídat předgenerování jako produkční službu.</p>
+        </div>
+      </article>
+
+      <article class="f">
+        <span class="no">2</span>
+        <div class="top"><h3>Sitemapa má 32 adres a polovina z nich je chybně</h3></div>
+        <div class="body">
+          <ul>
+            <li><b>Polské adresy z jiné instalace platformy:</b> <code>/fotbal/międzynarodowe-klubów/uefa-liga-mistrzów</code>, <code>puchar-fa</code>, <code>ligue-a</code>.</li>
+            <li><b>Jazyková značka pro černohorštinu</b> <code>hreflang="cnr"</code> u každé adresy. Bet-X nemá černohorskou verzi.</li>
+            <li><b>Dvojitá lomítka</b> <code>/cs//sports-betting</code> a <b>adresy s /cs/</b>, které web přesměruje jinam. V sitemapě tak nejsou adresy, které web sám označuje za hlavní.</li>
+            <li>Anglická adresa <code>/en/info/herni-plany</code> a stránky přihlášení, které do sitemapy nepatří.</li>
+            <li>Chybí stránky zápasů, většina lig, bonusy pro jednotlivé sporty a celé kasino.</li>
+          </ul>
+          <img src="sitemap-betx.jpg" width="1600" height="316" alt="Sitemapa bet-x.cz/sitemap.xml otevřená v prohlížeči: 32 adres včetně polských a s dvojitými lomítky" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--line)">
+          <p class="fix"><b>Co bych udělal:</b> generovat sitemapu automaticky z nabídky: sporty, ligy, zápasy, bonusy, obsah. Jen kanonické české adresy, bez hreflangu, dokud web nemá druhý jazyk.</p>
+        </div>
+      </article>
+
+      <article class="f">
+        <span class="no">3</span>
+        <div class="top"><h3>Google se mezi stránkami nemá jak proklikat</h3></div>
+        <div class="body">
+          <p>Seznam lig v levém menu (Premier League, Bundesliga, La Liga…) jsou nadpisy, které reagují na kliknutí, ale <b>nejsou to odkazy</b>. Stránka Premier League má jen 13 odkazů a všechny vedou do hlavního menu. Robot se tak k ligám a zápasům dostane jen přes sitemapu, a ta je neúplná.</p>
+          <p class="fix"><b>Co bych udělal:</b> každá liga, zápas a sport jako skutečný odkaz <code>&lt;a href&gt;</code>. Vzhled se nemusí měnit.</p>
+        </div>
+      </article>
+
+      <article class="f">
+        <span class="no">4</span>
+        <div class="top"><h3>Zápasy nemají vlastní stránky</h3></div>
+        <div class="body">
+          <p>Lidé hledají „Sparta Slavia kurzy“ nebo „tip Liverpool Arsenal“. Fortuna má na každý zápas vlastní adresu, v sitemapě jich je přes 2 300, například <code>/sazeni/fotbal/…/tampa-bay-miami-fc</code>. Bet-X na tyto dotazy nemá žádnou stránku, takže je přenechává konkurenci a tipařským webům partnerů.</p>
+          <p class="fix"><b>Co bych udělal:</b> stránka zápasu s titulkem „Sparta – Slavia: kurzy a sázky | BETX“, nadpisem, kurzy a krátkým preview. Po zápase na ní zůstanou výsledek a odkaz na další zápasy týmu.</p>
+        </div>
+      </article>
+
+      <article class="f">
+        <span class="no">5</span>
+        <div class="top"><h3>Stránky nemají text a titulky neprodávají</h3></div>
+        <div class="body">
+          <ul>
+            <li><b>Chybí text, který by Google přečetl.</b> Samotné H1 nerozhoduje: Fortuna ho na úvodu nemá a Tipsport má jen obecné „Nabídka“. Fortuna má ale v patičce SEO text s nadpisy „Fortuna sázky“, „Fortuna casino“ a „LIVE sázky“. Bet-X nemá nadpis ani text.</li>
+            <li>Titulek ligy zní <b>„Sázek | Anglie | Premier League | BETX“</b>. Je gramaticky špatně a neobsahuje slova, která lidé hledají: kurzy, sázky na Premier League.</li>
+            <li><b>Stejný popis na všech stránkách</b>, i na fotbalové lize zve na „Carambu, Keno a kasinové hry“.</li>
+            <li>Úvodní stránka nemá vlastní obsah a přesměruje na <code>/sports-betting?timefilter=kompletní</code>.</li>
+          </ul>
+          <p class="fix"><b>Co bych udělal:</b> krátký SEO text po vzoru Fortuny a šablony titulků, nadpisů a popisů pro každý typ stránky. Příklad: „Sázky na Premier League: kurzy na zápasy | BETX“. Je to jednorázová práce a platí pak pro tisíce stránek.</p>
+        </div>
+      </article>
+
+      <article class="f">
+        <span class="no">6</span>
+        <div class="top"><h3>Články v Novinkách jsou, ale Google je nevidí</h3></div>
+        <div class="body">
+          <p>Na webu jsou články, třeba „NETENT je nově na BETX! Přináší rovnou 44 nových her“. V Googlu ale nejsou. Na dotaz <code>site:</code> na tuhle adresu Google nenajde nic:</p>
+          <img src="google-site-novinka.jpg" width="1400" height="565" alt="Google na dotaz site:bet-x.cz/news/netent-je-nove-na-betx-prinasi-rovnou-44-novych-her nenašel žádný výsledek" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--line)">
+          <ul>
+            <li><b>Text článku na stránce bet-x.cz vůbec není.</b> Načítá se v rámečku (iframe) z WordPressu na jiné doméně, <code>cms.bet-x.cz</code>. Google obsah z rámečku stránce bet-x.cz nepřičítá. Pro něj je to prázdná stránka s titulkem „Novinky | BETX“, obecným popisem a bez nadpisu, a to u každého článku stejně.</li>
+            <li><b>Původní článek na cms.bet-x.cz má <code>noindex, nofollow</code>.</b> Google ho tedy nesmí zaindexovat ani tam. Text tak není v indexu nikde.</li>
+            <li><b>V sitemapě bet-x.cz žádné články nejsou,</b> je tam jen <code>/cs/news</code>. Odkazy na články jsou také uvnitř rámečku, takže se na ně Google nedostane ani z výpisu novinek.</li>
+            <li><b>WordPress má vlastní sitemapu</b> s 97 příspěvky na doméně cms.bet-x.cz, které jsou ale nastavené jako noindex. Google tak dostává protichůdné signály.</li>
+            <li>Adresa článku se v CMS přesměruje z <code>/news/</code> na <code>/promotions/</code> a nadpis H1 článku zní jen „news“.</li>
+          </ul>
+          <p class="fix"><b>Co bych udělal:</b> text článku vkládat přímo do stránky na bet-x.cz, ne přes rámeček. Každý článek musí mít vlastní titulek, popis a H1 a musí být v sitemapě bet-x.cz. Na cms.bet-x.cz může noindex zůstat, ale pak tam musí vést canonical na adresu na bet-x.cz. Do budoucna pak preview zápasů a přepisy videí z YouTube (části 2.1 a 2.4) publikovat stejnou cestou.</p>
+        </div>
+      </article>
+
+      <article class="f">
+        <span class="no">7</span>
+        <div class="top"><h3>Neexistující stránky vrací „vše v pořádku“</h3></div>
+        <div class="body">
+          <p>Adresa <code>bet-x.cz/tahle-stranka-neexistuje</code> vrátí kód 200 a obal aplikace. Fortuna vrací správně 404. Google pak plýtvá časem na nesmyslné adresy a může je i indexovat.</p>
+          <p class="fix"><b>Co bych udělal:</b> pro neznámé adresy vracet 404, pro zrušené zápasy a ligy přesměrování 301 na nadřazenou ligu.</p>
+          <img src="404-navrh.jpg" width="1661" height="947" alt="Návrh chybové stránky 404 pro BETX: „Tady už se nehraje“, tlačítka Zpět na sport a Prohlédnout live a výběr sportu Fotbal, Hokej, Tenis" style="width:100%;height:auto;border-radius:12px;border:1px solid var(--line)">
+        </div>
+      </article>
+
+      <article class="f">
+        <span class="no">8</span>
+        <div class="top"><h3>Drobnosti, které dohromady ubírají důvěru</h3></div>
+        <div class="body">
+          <ul>
+            <li><b>Oddělený mobilní web</b> <code>m.bet-x.cz</code> s vlastní sitemapou. Google hodnotí podle mobilní verze, takže se signály dělí mezi dvě domény. Fortuna i Tipsport mají jeden web pro všechna zařízení.</li>
+            <li><b>Žádná strukturovaná data</b> (schema.org) pro sportovní události, organizaci ani FAQ.</li>
+            <li><b>Obrázky bez popisku alt</b> (4 ze 4 na stránce ligy).</li>
+            <li><b>Překlep v patičce</b> na každé stránce: „ikonu ministertva“.</li>
+            <li>Web se v titulcích jmenuje <b>BETX</b>, doména a e-mail <b>bet-x</b>. Pro brandové vyhledávání je potřeba držet obě podoby.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap stack">
+    <div class="eyebrow">Srovnání s velkými sázkovkami</div>
+    <h2>Jak to dělají Fortuna a Tipsport</h2>
+    <p class="lead">Fortuna i Tipsport to mají postavené stejně: <strong>každý zápas, liga a tip je samostatná stránka</strong>, kterou Google najde. Bet-X má místo tisíců stránek pár desítek.</p>
+    <div class="tbl">
+      <table>
+        <thead><tr><th scope="col">Co se srovnává</th><th scope="col">Bet-X</th><th scope="col">Fortuna</th><th scope="col">Tipsport</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Text v HTML bez JavaScriptu</th><td><span class="x">Ne</span>, 4 slova</td><td><span class="y">Ano</span>, ~980 slov na úvodu</td><td><span class="q">Ne</span>, ~15 slov, zbytek dokreslí JavaScript</td></tr>
+          <tr><th scope="row">Nadpis H1 na úvodní stránce</th><td><span class="x">Ne</span>, ani žádný text</td><td><span class="q">Ne</span>, ale SEO text s nadpisy v patičce</td><td><span class="q">Ano</span>, obecné „Nabídka“</td></tr>
+          <tr><th scope="row">Adres v sitemapě</th><td class="num-c"><span class="x">32</span>, část chybně</td><td class="num-c"><span class="y">3 158</span> ve 3 sitemapách</td><td class="num-c"><span class="y">52 000+</span> v 8 sitemapách</td></tr>
+          <tr><th scope="row">Stránky jednotlivých zápasů</th><td><span class="x">Ne</span></td><td><span class="y">Ano</span>, 2 300+</td><td><span class="y">Ano</span>, kurzy i live</td></tr>
+          <tr><th scope="row">Obsah: tipy, analýzy, blog</th><td><span class="x">Články jsou, Google je nevidí</span></td><td><span class="y">Ano</span>, analýzy zápasů s tipem</td><td><span class="y">Ano</span>, 511 analýz komunity, 50 000+ blogů</td></tr>
+          <tr><th scope="row">Samostatná stránka s bonusem</th><td><span class="q">/bonuses</span>, partneři na ni neposílají</td><td><span class="y">Ano</span>, /bonus</td><td><span class="y">Ano</span>, /bonusy/vstupni-bonus</td></tr>
+          <tr><th scope="row">Komunita a soutěže</th><td><span class="x">Ne</span></td><td><span class="y">Ano</span>, komunita, kvíz, inspirace tikety</td><td><span class="y">Ano</span>, 23 soutěží, žebříčky tipérů</td></tr>
+          <tr><th scope="row">Neexistující stránka</th><td><span class="x">200</span>, chyba</td><td><span class="y">404</span></td><td><span class="q">Nezjištěno</span></td></tr>
+          <tr><th scope="row">Mobil</th><td><span class="x">Samostatný m.bet-x.cz</span></td><td><span class="y">Jeden web</span></td><td><span class="y">Jeden web</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:14px;color:var(--on-forest-muted)">Stav k 28. 10. 2026 podle veřejných sitemap a zdrojového kódu. Počty se mění každý den podle nabídky zápasů.</p>
+
+    <div class="lessons">
+      <div class="lesson"><span class="k">Fortuna</span><h3>Nabídka jako obsah</h3><p>Každý zápas v nabídce je automaticky stránka, která se dá najít. K tomu ručně psané analýzy velkých zápasů s konkrétním tipem a odkazem na sázku.</p></div>
+      <div class="lesson"><span class="k">Tipsport</span><h3>Komunita píše obsah za ně</h3><p>Tipéři píšou analýzy a blogy. Tipsport tak má desítky tisíc stránek, aniž by je musel psát sám, a hráči se na web vrací kvůli lidem, ne jen kvůli kurzům.</p></div>
+      <div class="lesson"><span class="k">Co bych si vzal pro Bet-X</span><h3>Nejdřív nabídka, potom obsah</h3><p>Začal bych stránkami zápasů a lig z nabídky, kterou už máte. Je to nejlevnější krok. Obsah z YouTube a tipovačky pak doplní to, co mají Fortuna a Tipsport navíc.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap stack">
+    <div class="eyebrow">Co opravit a v jakém pořadí</div>
+    <h2>V jakém pořadí bych to opravoval</h2>
+    <ol class="prio">
+      <li><span><b>Ověřit v Search Console, co Google vidí</b> a kolik stránek má v indexu. Rozhodnout mezi SSR a hlídaným předgenerováním. Bez toho nemá smysl dělat zbytek.</span></li>
+      <li><span><b>Opravit sitemapu a 404 a zprovoznit články.</b> Polské adresy, hreflang, dvojitá lomítka, automatické generování z nabídky. Články vložit přímo do stránky místo rámečku z cms.bet-x.cz.</span></li>
+      <li><span><b>Odkazy místo klikacích nadpisů</b> v menu lig a sportů.</span></li>
+      <li><span><b>Stránky lig a zápasů se šablonou</b> titulku, H1 a popisu. Tisíce nových vstupních bodů z vyhledávání bez psaní textů.</span></li>
+      <li><span><b>Brandové stránky z části 1.2:</b> bonus, promo kód, aplikace, registrace. Tady dnes provize berou partneři.</span></li>
+      <li><span><b>Obsah:</b> preview zápasů, tipy, články z YouTube videí, výsledky tipovačky.</span></li>
+    </ol>
+    <p class="link-box"><b>Proč to řeším v návrhu na náhradu partnerů:</b> každý hráč, který vás najde ve vyhledávání sám, je hráč bez provize. Body 1 až 3 jsou podle mě práce vývojářů na pár týdnů a otevřou cestu všemu ostatnímu z <a href="index.html#kanaly">části 2.4 návrhu</a>.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span><b>Zdeněk Matuška</b> · marketingový stratég a affiliate manažer · zdenekmatuska.cz</span>
+    <span><a href="index.html">← Zpět na návrh</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
+
+</body>
+</html>
