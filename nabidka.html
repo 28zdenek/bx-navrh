@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bet-X SEO nabídka</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: vizuál návrhu a auditu na bx.zdenekmatuska.cz. Příběh shora dolů: kde jsme → tři fáze → jak spolupráce poběží → cena → další krok. */
+:root{
+  --bg:#FAFCE8; --surface:#FFFFFF; --soft:#EFF7E4; --line:#DDE9E3;
+  --ink:#0B1F17; --text:#2B3B33; --muted:#5A6B62;
+  --forest:#0F3D2E; --forest-2:#1B5745; --lime:#D2F24C; --on-forest:#F3F8EE; --on-forest-muted:#B9CDC2;
+  --accent-text:#1B5745; --ok:#2F7A4F; --p-high:#C9372C; --p-med:#B07A00; --p-low:#2F6FD1;
+  --font:Poppins,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1A14; --surface:#11261D; --soft:#132B21; --line:#24402F;
+  --ink:#F1F6EC; --text:#D4E0D8; --muted:#9DB2A6;
+  --forest:#08140F; --forest-2:#1B5745; --lime:#D2F24C; --on-forest:#F3F8EE; --on-forest-muted:#A9BFB3;
+  --accent-text:#D2F24C; --ok:#7FD09E; --p-high:#F28B7E; --p-med:#E8C062; --p-low:#8DB5F5; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1A14; --surface:#11261D; --soft:#132B21; --line:#24402F;
+  --ink:#F1F6EC; --text:#D4E0D8; --muted:#9DB2A6;
+  --forest:#08140F; --forest-2:#1B5745; --lime:#D2F24C; --on-forest:#F3F8EE; --on-forest-muted:#A9BFB3;
+  --accent-text:#D2F24C; --ok:#7FD09E; --p-high:#F28B7E; --p-med:#E8C062; --p-low:#8DB5F5; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:clamp(40px,5.5vw,72px)}
+section+section{border-top:1px solid var(--line)}
+h1,h2,h3{color:var(--ink);text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,4.6vw,54px);line-height:1.08;letter-spacing:-0.03em;font-weight:700}
+h2{font-size:clamp(24px,2.8vw,36px);line-height:1.15;letter-spacing:-0.02em;font-weight:700}
+h3{font-size:19px;line-height:1.3;font-weight:600}
+p{margin:0;max-width:66ch}
+a{color:var(--ink)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.mark{position:relative;display:inline-block;white-space:nowrap}
+.mark::before{content:"";position:absolute;left:-6px;right:-6px;top:16%;bottom:8%;background:var(--lime);border-radius:8px;z-index:0}
+.mark>span{position:relative;z-index:1;color:#0B1F17}
+.eyebrow{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-text)}
+.lead{font-size:clamp(17px,1.4vw,19px);color:var(--muted)}
+.lead strong{color:var(--ink);font-weight:600}
+.note{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--p-high);border-radius:14px;padding:16px 18px;max-width:780px}
+.note b{color:var(--ink)}
+.note .dot{flex:none;width:10px;height:10px;border-radius:50%;background:var(--p-high);margin-top:8px}
+
+/* čísla z auditu */
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));gap:12px;margin-top:24px}
+.num{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:4px}
+.num .n{font-size:clamp(28px,3.2vw,38px);font-weight:700;letter-spacing:-0.02em;color:var(--ink);line-height:1.1;font-variant-numeric:tabular-nums}
+.num .n small{font-size:.5em;font-weight:600;color:var(--muted);letter-spacing:0}
+.num>span:last-child{font-size:14px;color:var(--muted)}
+.small{font-size:14px;color:var(--muted);margin-top:14px}
+
+/* fáze */
+.phases{display:flex;flex-direction:column;gap:16px;margin-top:28px}
+.ph{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;display:grid;grid-template-columns:56px 1fr;gap:4px 20px}
+.ph-no{grid-row:span 4;width:52px;height:52px;border-radius:15px;background:var(--forest);color:var(--lime);font-weight:700;font-size:22px;display:grid;place-items:center}
+.ph-top{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;justify-content:space-between}
+.meta{display:flex;flex-wrap:wrap;gap:8px}
+.pill{font-size:13px;font-weight:600;padding:3px 12px;border-radius:999px;background:var(--soft);color:var(--ink);border:1px solid var(--line);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill.price{background:var(--lime);color:#0B1F17;border-color:transparent}
+.ph ul{margin:10px 0 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.ph li b{color:var(--ink)}
+.result{margin-top:14px;background:var(--soft);border-radius:12px;padding:12px 16px;font-size:15px}
+.result b{color:var(--ink)}
+@media (max-width:560px){.ph{grid-template-columns:1fr}.ph-no{grid-row:auto}}
+
+/* časová osa */
+.gantt{margin-top:24px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;overflow-x:auto}
+.g{display:grid;grid-template-columns:110px repeat(7,minmax(60px,1fr));gap:8px 6px;min-width:620px;align-items:center}
+.g .mh{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:center}
+.g .lbl{font-size:14px;font-weight:600;color:var(--ink)}
+.bar{height:32px;border-radius:10px;display:flex;align-items:center;padding:0 12px;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden}
+.b1{background:var(--forest);color:var(--lime)}
+.b2{background:var(--forest-2);color:var(--on-forest)}
+.b3{background:linear-gradient(90deg,var(--lime) 60%,transparent);color:#0B1F17}
+.bres{background:var(--soft);color:var(--muted);border:1px dashed var(--line)}
+
+/* spolupráce */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:16px;margin-top:28px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.card p{font-size:15px}
+.jira{border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+.jrow{display:grid;grid-template-columns:62px 1fr 20px;gap:12px;align-items:center;padding:9px 14px;border-bottom:1px solid var(--line);font-size:14px;min-width:300px}
+.jrow:last-child{border-bottom:0}
+.jrow .key{color:var(--muted);font-variant-numeric:tabular-nums}
+.jrow .ttl{color:var(--ink);min-width:0}
+.pr-i{width:20px;height:20px}
+.pr-i.hst,.pr-i.hi{color:var(--p-high)}.pr-i.med{color:var(--p-med)}.pr-i.lo{color:var(--p-low)}
+.rep{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ri{background:var(--soft);border-radius:12px;padding:12px 14px;border-top:3px solid var(--forest-2);display:flex;flex-direction:column;gap:2px}
+.ri.bad{border-top-color:var(--p-high)}
+.ri b{color:var(--ink);font-size:15px}
+.ri span{font-size:13px;color:var(--muted);line-height:1.5}
+@media (max-width:420px){.rep{grid-template-columns:1fr}}
+
+/* cena */
+.band{background:var(--forest);color:var(--on-forest-muted)}
+.band h2,.band h3{color:var(--on-forest)}
+.band .eyebrow{color:var(--lime)}
+.prices{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:14px;margin-top:24px}
+.pr{background:var(--forest-2);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:6px}
+.pr .k{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--lime)}
+.pr .amt{font-size:clamp(26px,2.8vw,32px);font-weight:700;letter-spacing:-0.02em;color:var(--on-forest);line-height:1.15;font-variant-numeric:tabular-nums}
+.pr .amt small{font-size:.5em;font-weight:500;color:var(--on-forest-muted);letter-spacing:0}
+.pr p{font-size:14px}
+.sum{margin-top:14px;background:var(--lime);color:#0B1F17;border-radius:16px;padding:16px 20px;display:flex;flex-wrap:wrap;gap:6px 24px;align-items:baseline;justify-content:space-between}
+.sum b{font-size:22px;font-variant-numeric:tabular-nums}
+.terms{margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:14px}
+.terms .t{border:1px solid rgba(210,242,76,.25);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.terms ul{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;font-size:15px}
+
+/* další krok */
+.next{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:14px;margin-top:24px;counter-reset:s}
+.st{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:6px;counter-increment:s}
+.st::before{content:counter(s);width:30px;height:30px;border-radius:50%;background:var(--lime);color:#0B1F17;font-weight:700;font-size:14px;display:grid;place-items:center}
+.st b{color:var(--ink)}
+.st span{font-size:15px}
+
+.back{display:inline-flex;gap:8px;align-items:center;font-size:14px;font-weight:500;color:var(--ink);text-decoration:none;border:1px solid var(--line);background:var(--surface);padding:7px 14px;border-radius:999px;align-self:flex-start}
+.back:hover,.back:focus-visible{border-color:var(--forest-2);outline:none}
+
+footer{padding-block:36px 52px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:space-between}
+footer b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="p-hst" viewBox="0 0 20 20"><path d="M4 10l6-5 6 5M4 15l6-5 6 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="p-hi" viewBox="0 0 20 20"><path d="M4 13l6-5 6 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="p-med" viewBox="0 0 20 20"><path d="M4 8h12M4 12h12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="p-lo" viewBox="0 0 20 20"><path d="M4 7l6 5 6-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<!-- ÚVOD -->
+<section>
+  <div class="wrap stack">
+    <a class="back" href="audit.html">Lehký audit z 28. 10. 2026 →</a>
+    <div class="eyebrow">Nabídka · SEO pro bet-x.cz · listopad 2026</div>
+    <h1>Jak dostat <span class="mark"><span>bet-x.cz</span></span> do Googlu ve třech fázích</h1>
+    <p class="lead">Děkuji za zpětnou vazbu k SEO auditu. Tady je návrh, jak nalezené chyby opravit a z vyhledávání udělat stálý zdroj nových hráčů bez provize partnerům. <strong>Nejdřív opravíme technický základ, potom necháme automaticky vzniknout stovky stránek z vaší nabídky a nakonec budujeme obsah a odkazy.</strong></p>
+    <div class="note"><span class="dot" aria-hidden="true"></span><p><b>Budu upřímný: bet-x.cz je dnes z pohledu technického SEO ve velmi špatném stavu.</b> Netýká se to jen vyhledávání. Pomalá nebo pro roboty prázdná stránka zhoršuje i hodnocení cílové stránky v Google Ads a na Metě, takže placená reklama může být dražší. Opravy ve fázi 1 pomůžou i jí.</p></div>
+  </div>
+</section>
+
+<!-- VÝCHOZÍ STAV -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Výchozí stav</div>
+    <h2>Co ukázal audit</h2>
+    <div class="nums">
+      <div class="num"><span class="n">4 <small>slova</small></span><span>vidí Google na stránce Premier League. Zbytek dokreslí až JavaScript.</span></div>
+      <div class="num"><span class="n">32 <small>adres</small></span><span>je v sitemapě a část z nich je chybně. Zápasy ani většina lig v ní nejsou.</span></div>
+      <div class="num"><span class="n">0 <small>odkazů</small></span><span>z menu lig. Google se z jedné ligy nedostane na další.</span></div>
+      <div class="num"><span class="n">0 <small>článků</small></span><span>v Googlu. Novinky se načítají v rámečku z jiné domény s noindex.</span></div>
+    </div>
+    <p class="small">Celý audit: <a href="audit.html" target="_blank" rel="noopener">bx.zdenekmatuska.cz/audit.html</a>. Od těchto čísel budu každý měsíc měřit pokrok.</p>
+  </div>
+</section>
+
+<!-- TŘI FÁZE -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Postup</div>
+    <h2>Tři fáze, každá staví na předchozí</h2>
+    <div class="phases">
+
+      <article class="ph" id="faze-1">
+        <div class="ph-no">1</div>
+        <div class="ph-top"><h3>Analýza a technické opravy</h3><div class="meta"><span class="pill">1.–3. měsíc</span><span class="pill price">20–25 tis. Kč / měsíc</span></div></div>
+        <p>Web rozeberu do základů zevnitř, s přístupem do Search Console. Pak zadám a zkontroluji všechny technické opravy.</p>
+        <ul>
+          <li><b>Vykreslování pro Google:</b> aby robot dostal obsah, ne prázdný obal.</li>
+          <li><b>Sitemapa, chyby 404 a odkazy v menu</b> lig a sportů.</li>
+          <li><b>Titulky a popisy</b> pro každý typ stránky místo jednoho společného.</li>
+          <li><b>Články z Novinek</b> přímo ve stránce, aby je Google viděl.</li>
+        </ul>
+        <div class="result"><b>Výsledek:</b> technicky čistý web, kterému Google rozumí, a mapa klíčových slov pro fázi 2.</div>
+      </article>
+
+      <article class="ph" id="faze-2">
+        <div class="ph-no">2</div>
+        <div class="ph-top"><h3>Stránky, které přivedou návštěvníky</h3><div class="meta"><span class="pill">4.–5. měsíc</span><span class="pill price">30–50 tis. Kč</span></div></div>
+        <p>Z nabídky, kterou už máte, vzniknou stránky automaticky. Nikdo je nemusí psát ručně. Já navrhnu šablony a pravidla, vývojáři je napojí.</p>
+        <ul>
+          <li><b>Zápasy, ligy a týmy:</b> stránky na dotazy jako „Sparta Slavia kurzy“ nebo „sázky na Premier League“.</li>
+          <li><b>Bonus, promo kód, aplikace, registrace:</b> dotazy, na kterých dnes vydělávají partneři.</li>
+          <li><b>Pravidla indexace a prolinkování,</b> aby nevznikaly prázdné stránky.</li>
+          <li><b>Nejdřív jedna liga,</b> po ověření celá nabídka.</li>
+        </ul>
+        <div class="result"><b>Výsledek:</b> stovky podstránek, které organicky přivádějí návštěvníky z Googlu na bet-x.cz.</div>
+      </article>
+
+      <article class="ph" id="faze-3">
+        <div class="ph-no">3</div>
+        <div class="ph-top"><h3>Obsah a růst</h3><div class="meta"><span class="pill">od 6. měsíce</span><span class="pill price">20 tis. Kč / měsíc</span></div></div>
+        <p>Pro lepší pozice v Googlu potřebuje web důvěru z jiných webů. Proto je i po spuštění důležitý linkbuilding, obsah a interní prolinkování.</p>
+        <ul>
+          <li><b>Linkbuilding:</b> sportovní a zpravodajské weby, kluby, bývalí affiliate partneři.</li>
+          <li><b>Obsah:</b> preview velkých zápasů a články z vašich videí na YouTube.</li>
+          <li><b>Interní prolinkování</b> nového obsahu se stránkami zápasů, lig a bonusů.</li>
+          <li><b>Průběžná kontrola,</b> aby nové verze webu nerozbily, co funguje.</li>
+        </ul>
+        <div class="result"><b>Výsledek:</b> stále lepší pozice a víc hráčů z vyhledávání měsíc po měsíci.</div>
+      </article>
+    </div>
+
+    <div class="gantt" role="img" aria-label="Fáze 1 v 1. až 3. měsíci, fáze 2 ve 4. a 5. měsíci, fáze 3 od 6. měsíce. Růst návštěvnosti zhruba od 5. měsíce.">
+      <div class="g">
+        <span></span>
+        <span class="mh">1.</span><span class="mh">2.</span><span class="mh">3.</span><span class="mh">4.</span><span class="mh">5.</span><span class="mh">6.</span><span class="mh">dál</span>
+        <span class="lbl">Fáze 1</span>
+        <div class="bar b1" style="grid-column:2 / span 3">Analýza a opravy</div>
+        <span style="grid-column:5 / span 4"></span>
+        <span class="lbl">Fáze 2</span>
+        <span style="grid-column:2 / span 3"></span>
+        <div class="bar b2" style="grid-column:5 / span 2">Stránky</div>
+        <span style="grid-column:7 / span 2"></span>
+        <span class="lbl">Fáze 3</span>
+        <span style="grid-column:2 / span 5"></span>
+        <div class="bar b3" style="grid-column:7 / span 2">Obsah a odkazy</div>
+        <span class="lbl">Výsledky</span>
+        <span style="grid-column:2 / span 4"></span>
+        <div class="bar bres" style="grid-column:6 / span 3">Růst z Googlu</div>
+      </div>
+    </div>
+    <p class="small">Google potřebuje na opravené a nové stránky týdny až měsíce. První měřitelný nárůst čekám kolem 5. měsíce.</p>
+  </div>
+</section>
+
+<!-- SPOLUPRÁCE -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Spolupráce</div>
+    <h2>Jak to poběží</h2>
+    <div class="cols">
+      <div class="card">
+        <h3>Úkoly jako JIRA tickety s prioritou</h3>
+        <p>Ideálně vše zadávám přímo do vaší JIRA. Každý úkol bude samostatný ticket s přesným zadáním a prioritou a podle ní se bude všechno dělat. Hotový úkol zkontroluji na ostrém webu. Úpravy v kódu dělají vaši vývojáři.</p>
+        <div class="jira" role="img" aria-label="Ukázka JIRA ticketů seřazených podle priority">
+          <div class="jrow"><span class="key">BX-101</span><span class="ttl">Ověřit, co Google dostane bez JavaScriptu</span><svg class="pr-i hst"><title>Nejvyšší priorita</title><use href="#p-hst"/></svg></div>
+          <div class="jrow"><span class="key">BX-102</span><span class="ttl">Sitemapa: odstranit polské adresy</span><svg class="pr-i hst"><title>Nejvyšší priorita</title><use href="#p-hst"/></svg></div>
+          <div class="jrow"><span class="key">BX-103</span><span class="ttl">Neexistující stránky vracejí 200 místo 404</span><svg class="pr-i hi"><title>Vysoká priorita</title><use href="#p-hi"/></svg></div>
+          <div class="jrow"><span class="key">BX-104</span><span class="ttl">Šablona titulku pro stránky lig</span><svg class="pr-i med"><title>Střední priorita</title><use href="#p-med"/></svg></div>
+          <div class="jrow"><span class="key">BX-105</span><span class="ttl">Popisky alt u obrázků</span><svg class="pr-i lo"><title>Nízká priorita</title><use href="#p-lo"/></svg></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Měsíční report bez přikrášlování</h3>
+        <p>Zakládám si na důvěře. Každý měsíc proto ukážu dobré i špatné věci, které se udály.</p>
+        <div class="rep">
+          <div class="ri"><b>Co jsem udělal</b><span>tickety, kontroly, nové stránky a odkazy</span></div>
+          <div class="ri"><b>Co se povedlo</b><span>indexace, návštěvnost a registrace z Googlu</span></div>
+          <div class="ri bad"><b>Co se nepovedlo</b><span>a proč, bez vytáček</span></div>
+          <div class="ri"><b>Co dál</b><span>priority na další měsíc</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CENA -->
+<section class="band">
+  <div class="wrap">
+    <div class="eyebrow">Cena</div>
+    <h2>Kolik to stojí</h2>
+    <div class="prices">
+      <div class="pr"><span class="k">Fáze 1 · 2–3 měsíce</span><span class="amt">20–25 tis. Kč <small>/ měsíc</small></span><p>Celkem 40 000–75 000 Kč podle délky.</p></div>
+      <div class="pr"><span class="k">Fáze 2 · 2 měsíce</span><span class="amt">30–50 tis. Kč</span><p>Podle počtu typů stránek, upřesníme na konci fáze 1.</p></div>
+      <div class="pr"><span class="k">Fáze 3 · průběžně</span><span class="amt">20 000 Kč <small>/ měsíc</small></span><p>Minimálně 3 měsíce, pak s měsíční výpovědí.</p></div>
+    </div>
+    <div class="sum"><span>Prvních 6 měsíců celkem, bez DPH</span><b>110 000–145 000 Kč</b></div>
+    <div class="terms">
+      <div class="t">
+        <h3>V ceně není</h3>
+        <ul>
+          <li>práce vašich vývojářů,</li>
+          <li>nákup článků a odkazů na cizích webech.</li>
+        </ul>
+      </div>
+      <div class="t">
+        <h3>Co potřebuji od vás</h3>
+        <ul>
+          <li>přístup do Search Console, Google Analytics a JIRA,</li>
+          <li>kontakt na vývojáře a jednoho člověka, který schvaluje.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DALŠÍ KROK -->
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Další krok</div>
+    <h2>Jak začneme</h2>
+    <div class="next">
+      <div class="st"><b>Krátká schůzka</b><span>Projdeme nabídku a doladíme rozsah.</span></div>
+      <div class="st"><b>Přístupy</b><span>Search Console, Analytics a JIRA.</span></div>
+      <div class="st"><b>Start fáze 1</b><span>Do 14 dnů od přístupů dostanete první tickety s prioritami.</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span><b>Zdeněk Matuška</b> · marketingový stratég a affiliate manažer · zdenekmatuska.cz</span>
+    <span>Navazuje na SEO audit z 28. 10. 2026</span>
+  </div>
+</footer>
+</body>
+</html>
